@@ -7,6 +7,12 @@ import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { FontAwesome5 } from '@expo/vector-icons'
 import { Feather } from '@expo/vector-icons'
 import { Entypo } from '@expo/vector-icons'
+import bcrypt from 'react-native-bcrypt';
+
+import { db,auth } from "../../../firebaseConfig";
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { collection, addDoc } from 'firebase/firestore';
+
  
 const SignupScreen = ({navigation}) => {
   const [emailfocus, setEmailfocus] = useState(false);
@@ -17,6 +23,72 @@ const SignupScreen = ({navigation}) => {
   const [showcpassword, setShowcpassword] = useState(false);
   const [cpasswordfocus, setcPasswordfocus] = useState(false);
 
+  //taking data
+  const [name,setName] =useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [cpassword,setcPassword] = useState('')
+  const [phone, setPhone] = useState('')
+  const [address, SetAddress] = useState('')
+
+  const [customError, setCustomError] = useState('')
+  const [successmsg, setSuccessmsg] = useState(null)
+
+
+  const handleSignup = async () => {
+    const FormData = {
+      name: name,
+      email: email,
+    //   password: password,
+      phone: phone,
+      address: address,
+    };
+  
+    // Kiểm tra dữ liệu nhập
+    if (password !== cpassword) {
+      setCustomError("Password doesn't match");
+
+      
+      return;
+    } else if (phone.length !== 10) {
+      setCustomError("Phone number should be 10 digits");
+
+      
+      return;
+    }
+  
+    try {
+    const hashedPassword = bcrypt.hashSync(password, 10);
+      // Tạo tài khoản trên Firebase Auth
+      // await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+  
+      // Thêm thông tin người dùng vào Firestore
+      const userRef = collection(db, "UserData");
+      await addDoc(userRef, {
+        ...FormData,
+        uid: user.uid,
+        password: hashedPassword, // Lưu mật khẩu băm
+      });
+  
+      // Hiển thị thông báo thành công
+      setSuccessmsg('User created successfully');
+
+      setTimeout(() => {
+        setSuccessmsg("");
+      }, 5000);
+    } catch (error) {
+        if (error.code === "auth/email-already-in-use") {
+          setCustomError("Email already exists. Please use a different email.");
+        } else {
+          setCustomError(error.message);
+        }
+        setTimeout(() => {
+            setCustomError("");
+          }, 5000);
+      }
+  };
   return (
     <View style={styles.container}>
         <Text style={styles.head1}>Sign up</Text>
@@ -32,7 +104,9 @@ const SignupScreen = ({navigation}) => {
               setPhonefocus(false);
               setcPasswordfocus(false);
 
-              }}/>
+              }}
+              onChangeText={(text) => setName(text)}
+              />
         </View>
 
         <View style= {styles.inputout}> 
@@ -46,7 +120,9 @@ const SignupScreen = ({navigation}) => {
               setPhonefocus(false);
               setcPasswordfocus(false);
 
-              }}/>
+              }}
+              onChangeText={(text) => setEmail(text)}
+              />
         </View>
 
         <View style= {styles.inputout}> 
@@ -60,7 +136,9 @@ const SignupScreen = ({navigation}) => {
               setPhonefocus(true);
               setcPasswordfocus(false);
               
-              }}/>
+              }}
+              onChangeText={(text) => setPhone(text)}
+              />
         </View>
         
 {/* Password start */}
@@ -76,6 +154,7 @@ const SignupScreen = ({navigation}) => {
               setcPasswordfocus(false);
             
             }}
+              onChangeText={(text) => setPassword(text)}
               secureTextEntry={showpassword === false ? true : false} />
             <Octicons name={showpassword == false ? "eye-closed" : "eye"} size={24} color="black" onPress={() => setShowpassword(!showpassword)}/>
         </View>
@@ -92,6 +171,7 @@ const SignupScreen = ({navigation}) => {
               setcPasswordfocus(true);
 
             }}
+            onChangeText={(text) => setcPassword(text)}
               secureTextEntry={showcpassword === false ? true : false} />
             <Octicons name={showcpassword == false ? "eye-closed" : "eye"} size={24} color="black" onPress={() => setShowcpassword(!showcpassword)}/>
         </View>
@@ -99,12 +179,26 @@ const SignupScreen = ({navigation}) => {
 
         <Text style={styles.address}>Please enter your address</Text>
         <View style={styles.inputout}>
-            <TextInput style={styles.input1} placeholder="Enter your Address"/>
+            <TextInput style={styles.input1} placeholder="Enter your Address" onChangeText={(text) => SetAddress(text)}/>
         </View>
 
-        <TouchableOpacity style={btnlogin}>
+        {/* Error email */}
+        {customError && (
+        <Text style={{ color: "red", fontSize: 14, marginVertical: 10 }}>
+            {customError}
+        </Text>
+        )}
+        {/* correct email */}
+        {successmsg && (
+        <Text style={{ color: "green", fontSize: 14, marginVertical: 10 }}>
+            {successmsg}
+        </Text>
+        )}
+
+        <TouchableOpacity style={btnlogin} onPress={() => handleSignup()}>
           <Text style={{  color: 'white', fontSize:titles.btntxt, fontWeight: "bold" }}>Sign up</Text>
         </TouchableOpacity>
+
 
         {/* <Text style={styles.forgot}>Forgot Password?</Text> */}
         <Text style={styles.or}>OR</Text>

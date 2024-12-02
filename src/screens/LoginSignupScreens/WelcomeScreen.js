@@ -1,9 +1,39 @@
-import React from 'react'
+import { useEffect, useState } from 'react'
 import { Image, View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import logo from '../../../assets/logo.png';
 import {colors, hr80 } from '../../globals/style'
+import { db } from "../../../firebaseConfig";
+import { auth } from '../../../firebaseConfig';
+import { onAuthStateChanged } from 'firebase/auth';
+import { signOut } from 'firebase/auth';
 
 const WelcomeScreen = ({navigation}) => {
+    const [userlogged, setUserlogged] = useState('')
+
+    useEffect(() => {
+        const checklogin = () => {
+          onAuthStateChanged(auth, (user) => {
+            if (user) {
+              setUserlogged(user);
+            } else {
+              setUserlogged(null);
+            }
+          });
+        };
+        checklogin();
+      }, []);
+
+      const handleLogout = () => {
+        signOut(auth)
+          .then(() => {
+            // Điều hướng đến màn hình đăng nhập nếu cần
+            navigation.navigate('welcomepage');
+          })
+          .catch((error) => {
+            console.error('Logout error:', error.message);
+          });
+      };
+
   return (
     <View style={styles.container}>
         <Text style={styles.title}>Welcome to FruitShop</Text>
@@ -13,8 +43,8 @@ const WelcomeScreen = ({navigation}) => {
         <View style={hr80}/>
         <Text style={styles.text}>Find the best food around you at lowest price.</Text>
         <View style={hr80}/>
-
-        <View style = {styles.btnout}>
+        {userlogged == null ?
+            <View style = {styles.btnout}>
             <TouchableOpacity onPress={()=> navigation.navigate('signup')}>
                 <Text style={styles.btn}>Sign up</Text>
             </TouchableOpacity>
@@ -22,6 +52,21 @@ const WelcomeScreen = ({navigation}) => {
                 <Text style={styles.btn}>Log in</Text>
             </TouchableOpacity>
         </View>
+        :
+        <View style={styles.logged}>
+            <Text style={styles.txtlog}>Signed in as <Text style={styles.txtlogin}>{userlogged.email}</Text></Text>
+            <View style = {styles.btnout}>
+            <TouchableOpacity onPress={()=> navigation.navigate('home')}>
+                <Text style={styles.btn}>Go to Home</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={()=> handleLogout()}>
+                <Text style={styles.btn}>Log out</Text>
+            </TouchableOpacity>
+        </View>
+        </View>
+        }
+
+        
     </View>
   )
 }
@@ -71,7 +116,17 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         padding: 10,
         paddingHorizontal: 20,
+    },logged: {
+        alignItems: 'center'
+    },txtlog: {
+        fontSize: 20,
+        color: 'white',  
+    },txtlogin:{
+        fontSize: 19,
+        color: 'white',
+        fontWeight: '700',
     }
+
 })
 
 export default WelcomeScreen

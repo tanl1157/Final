@@ -3,16 +3,19 @@ import React from 'react'
 import { FontAwesome5, Fontisto, MaterialCommunityIcons } from '@expo/vector-icons'
 
 import { colors } from '../globals/style'
+import { TouchableOpacity } from 'react-native'
 
-const HomeHeadNav = () => {
+const HomeHeadNav = ({navigation}) => {
   return (
     <View style={styles.container}>
-      <Fontisto name='nav-icon-list-a' size={20} color='black' style={styles.myicon} />
+      <Fontisto />
       <View style={styles.containerin}> 
         <Text style={styles.mytext}>FruitShop</Text>
         <Fontisto name="shopping-store" size={24} color="black" style={styles.myicon}/>
       </View>
+      <TouchableOpacity onPress={() => navigation.navigate('userprofile')}>
       <FontAwesome5 name='user-circle' size={26} color='black' style={styles.myicon}/>
+      </TouchableOpacity>
     </View>
   )
 }

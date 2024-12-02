@@ -1,0 +1,219 @@
+/* Global styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* Order Section */
+.order-section {
+  padding: 20px;
+}
+
+.order-row_card, .order-row_card1 {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin: 5px 0;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    min-height: 50px;
+  }
+
+.order-head1 {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.order-s1 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.searchbar {
+  flex: 1;
+  padding: 10px;
+  margin-right: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.order-s1-in {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.ordertxt {
+    flex: 1;
+    text-align: center;
+    font-size: 14px;
+    padding: 5px;
+    margin: 0;
+  }
+
+/* Order Container */
+.order_container {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.order-row_card1 {
+    font-weight: bold;
+    background-color: #f5f5f5;
+  }
+
+.order-row_card1 .ordertxt {
+  flex: 1;
+  text-align: center;
+  font-weight: bold;
+  color: #555;
+}
+
+.order-row_card1 button {
+  background-color: #4caf50;
+  color: #fff;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.order-row_card1 button:hover {
+  background-color: #45a049;
+}
+
+.order__container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px;
+  }
+  
+  .order-row_card {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin: 10px 0;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+}
+  
+.ordertxt {
+    flex: 1;
+    text-align: center;
+    font-size: 14px;
+    padding: 5px;
+    margin: 0 5px;
+}
+
+.order-card-in {
+    flex: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+  
+.order-card-in select {
+    width: 90%;
+    text-align: center;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+
+  input.ordertxt {
+    width: 90%;
+    padding: 5px;
+    font-size: 14px;
+    margin: 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  button:hover {
+    background-color: #218838;
+  }
+  .order-container {
+    width: 100%;
+    padding: 10px;
+    margin: 0 auto;
+  }
+
+  .order-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .order-row_card1,
+  .order-row_card {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr; /* Đảm bảo chia đều các cột */
+    align-items: center;
+    text-align: center;
+    gap: 10px; /* Khoảng cách giữa các cột */
+    padding: 10px;
+    border-bottom: 1px solid #eaeaea; /* Viền giữa các hàng */
+  }
+  
+  .order-row_card1 {
+    font-weight: bold;
+    background-color: #f5f5f5; /* Màu nền header */
+  }
+  
+  .order-row_card {
+    background-color: #fff; /* Màu nền các hàng */
+  }
+  
+  .ordertxt {
+    font-size: 14px;
+    padding: 5px;
+    width: 100%; /* Đảm bảo phần tử input, select chiếm đúng không gian */
+    box-sizing: border-box; /* Bao gồm padding trong chiều rộng */
+  }
+  
+  .order-card-in select,
+  .order-card-in input {
+    width: 100%; /* Đảm bảo chiều rộng nhất quán */
+    padding: 5px;
+    box-sizing: border-box;
+  }
+  
+  button {
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
